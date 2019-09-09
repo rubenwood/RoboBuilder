@@ -1,0 +1,117 @@
+
+Fend off enemies
+
+Enemies:
+	drop items
+		Nothing
+		Junk
+		Batteries
+		Parts
+	Attack Player, Robos, Structures
+	
+Pick up items
+	Must use RoboArm (upgradeable?)
+	
+Put items in RoboBay
+	Batteries += Power
+	Junk += RoboPartProgress
+	
+Player Choice:
+	Build upgrades for self OR build other Robots?
+	
+	Upgrades for self may be faster to build (to an extent) but;
+	there is only one of you and your personal upgrades do not benefit any bots you build
+	Therefore; the player may be overwhelmed easily at higher levels
+	
+	Building parts is generally slower but several parts can fit together to build a bot
+	Bots serve as loyal companions who assist you in fending off enemies
+	However, your botlab and the junk you have collected are not ideal for making functional bots
+	Therefore; bots are: weak, tempramental, may go haywire, shutdown or explode without warning :-(
+
+
+PartSelector (Selects a part for replication, consumes nothing)
+	
+Smelter (Produce Parts, Consume Junk and Batteries):
+	Select RoboPart to build from UnlockedParts		
+
+	Power - Put in Batteries
+	
+	BuildComponents
+		Requires Junk
+		
+		if(power > 1)
+			if(Put Junk into RoboBay):
+				BuildProgess + 1
+				
+		if(BuildProgress == MaxProgress):
+			RoboPart complete!
+			spawn Part (the part that was selected in the PartSelector)
+
+RoboBay (Produce Robots, consume Parts):
+	Put parts together to make a robot	
+	Robots are comprised of at least 3 parts
+		Head
+		Connectors
+		Legs
+	If there are at least 1 of each of these 3 parts in the bay then build bot
+	
+	2 ways to build:
+		Blueprint
+			When all parts in the bay match the bp build bot
+			The bp is a prebuilt design that cannot be modified
+		Free
+			Allow user to position parts however they wish
+			Check to make sure its at least the 3 parts mentioned above
+
+Bots:
+	Put together several RoboParts to complete a bot
+	
+	
+Mod system:
+Parts can drop from enemies, sometimes these parts will have a modifier
+These modifiers will affect the spawned robo
+
+Enemy has chance to drop item (based off of drop table)
+	if dropped item is  a part then roll on the mod table
+
+RULES:
+Allies cannot have lasers unless it gets a +NumLaser mod (and total NumLasers > 0)
+if no lasers then ignore other laser mods
+
+Replicating parts with mods has a chance of removing the mods
+Perhaps certain parts hava durabilty (times it can be replicated), this could alos be affected by the mods
+-----------------
+Enemy Drop item ->
+select from drop table ->
+if part -> 
+select from mod table -> 
+add mod to part -> 
+part in robobay -> 
+add mods on parts to robo -> 
+robo check mods and calculate/combine mods -> 
+add totals to stats
+---------------
+
+Item Class
+	string name
+	float baseChance
+
+DropTable Class
+	public List<GameObjects> potential_drops
+	
+	private List<Item> table;
+	
+	addToTable
+		foreach drop in potential_drops
+			if(drop is part)
+				itemTable.add(new Item(drop.partName, partBaseChance)
+			else if(drop.tag == junk)
+				itemTable.add(new Item(drop.name, junkBaseChance)
+			else if(drop.tag == battery)
+				itemTable.add(new Item(drop.name, batteryBaseChance)
+			
+	rollInTable
+		if(Random.value >= item.chance)
+			drop item
+			
+

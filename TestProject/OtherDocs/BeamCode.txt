@@ -1,0 +1,23 @@
+public Transform beam;
+public float sweepSpeed;
+public Vector3 sweepAngle;
+
+
+public float r;
+
+///Quaternion a = Quaternion.Euler(Random.Range(-randAngle.x, randAngle.x), Random.Range(-randAngle.y, randAngle.y), Random.Range(-randAngle.z, randAngle.z));
+float sinSweep = Mathf.Sin(sweepSpeed * Time.time);
+float rand = Random.Range(-r, r);
+Quaternion a = Quaternion.Euler(sinSweep * sweepAngle.x, (sinSweep * sweepAngle.y), sinSweep * sweepAngle.z);
+
+///Physics.Raycast(launchPoint.position, launchPoint.forward, out hit);
+beam.localRotation = a;
+beam.localScale = new Vector3(0.3f, 0.3f, 100);
+	
+	
+	
+# Other notes
+???
+An example of this is in a coroutine don't use yield return new WaitForSeconds(1); 
+instead make a WaitForSeconds waitDelay = new WaitForSeconds(1); 
+then call it by yield return waitDelay; That way you don't generate garbage
